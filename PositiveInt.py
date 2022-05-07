@@ -26,6 +26,8 @@ class Descriptor:
         return str(self.value)
 
     def __add__(self, other):
+        if isinstance(other, PositiveInt):
+            return PositiveInt(self.value + other.value)
         try:
             other = float(other)
             return PositiveInt(self.value + round(abs(other)))
@@ -34,12 +36,16 @@ class Descriptor:
 
     def __sub__(self, other):
         try:
+            if isinstance(other, PositiveInt):
+                return PositiveInt(self.value - other.value)
             other = float(other)
             return PositiveInt(abs(self.value - round(abs(other))))
         except ValueError:
             raise ValueError(f"You cannot create a positive integer with: {other}")
 
     def __mul__(self, other):
+        if isinstance(other, PositiveInt):
+            return PositiveInt(self.value * other.value)
         try:
             other = float(other)
             return PositiveInt(round(self.value * round(abs(other))))
@@ -47,11 +53,14 @@ class Descriptor:
             raise ValueError(f"You cannot create a positive integer with: {other}")
 
     def __truediv__(self, other):
+        if isinstance(other, PositiveInt):
+            return PositiveInt(self.value // other.value)
         try:
             other = float(other)
-            return PositiveInt(self.value // round(abs(other)))
+            return PositiveInt(self.value / round(abs(other)))
         except ValueError:
             raise ValueError(f"You cannot create a positive integer with: {other}")
+            
 
 
 class PositiveInt(Descriptor):
@@ -59,8 +68,25 @@ class PositiveInt(Descriptor):
 
 
 if __name__ == "__main__":
+    sep = "#" * 70
     P1 = PositiveInt(50)
-    print(P1)
-    ans = P1 * 20
-    print(ans)
-    print(type(ans))
+    P2 = PositiveInt(-20)
+    P3 = PositiveInt(16.5)
+    print(sep)
+    print(f"PositiveInt of 50 is {P1}\nPositiveInt of -20 is {P2}\nPositiveInt of 16.5 is {P3}")
+    print(sep)
+    ans = P1 * 20.5
+    ans2 = P2 / 10
+    ans3 = P3 - 10
+    ans4 = P3 + P2
+    print(sep)
+    print("Any number Multiplied PositiveInt is PositiveInt")
+    print(f"PositiveInt 50 * Float 20.5 = PositiveInt {ans}")
+    print(sep)
+    print("PositiveInt Devided by any number is PositiveInt")
+    print(f"PositiveInt 20 / Int 10 = PositiveInt {ans2}")
+    print(sep)
+    print("Addition and Substrction will return PositiveInt")
+    print(f"PostiveInt {P3} - Int 10 = PositiveInt {ans3}")
+    print(f"PostiveInt {P3} + PostiveInt {P2} = PositiveInt {ans4}")
+    print(sep)
